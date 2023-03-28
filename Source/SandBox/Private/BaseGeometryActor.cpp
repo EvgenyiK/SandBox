@@ -24,23 +24,22 @@ void ABaseGeometryActor::BeginPlay()
 	
 	InitialLocation = GetActorLocation();
 
-	//printTransform()
-	//printStringTypes();
-	//printTypes();
+	//PrintTransform()
+	//PrintStringTypes();
+	//PrintTypes();
 
 }
 // Called every frame
 void ABaseGeometryActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	FVector CurrentLocation = GetActorLocation();
-	float time = GetWorld()->GetTimeSeconds();
-	CurrentLocation.Z = InitialLocation.Z + Amplitude * FMath::Sin(Freequency * time);
 
-	SetActorLocation(CurrentLocation);
+	HandleMovement();
+
+	
 }
 
-void ABaseGeometryActor::printTypes()
+void ABaseGeometryActor::PrintTypes()
 {
 	UE_LOG(LogBaseGeometry, Warning, TEXT("ActorName %s"), *GetName());
 	UE_LOG(LogBaseGeometry, Warning, TEXT("Weapons num: %d, kills num: %i"), WeaponsNum, KillsNum);
@@ -48,7 +47,7 @@ void ABaseGeometryActor::printTypes()
 	UE_LOG(LogBaseGeometry, Warning, TEXT("IsDead: %d, HasWeapons: "), IsDead, static_cast<int>(HasWeapons));
 }
 
-void ABaseGeometryActor::printStringTypes()
+void ABaseGeometryActor::PrintStringTypes()
 {
 	FString Name = "John Conor";
 
@@ -67,7 +66,7 @@ void ABaseGeometryActor::printStringTypes()
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, Stat, true, FVector2D(1.5f, 1.5f));
 }
 
-void ABaseGeometryActor::printTransform()
+void ABaseGeometryActor::PrintTransform()
 {
 	FTransform Transform = GetActorTransform();
 	FVector Location = Transform.GetLocation();
@@ -81,6 +80,26 @@ void ABaseGeometryActor::printTransform()
 	UE_LOG(LogBaseGeometry, Warning, TEXT("Scale %s"), *Scale.ToString());
 
 	UE_LOG(LogBaseGeometry, Error, TEXT("HumanTransform %s"), *Transform.ToHumanReadableString());
+}
+
+void ABaseGeometryActor::HandleMovement()
+{
+	switch (GeometryData.MoveType)
+	{
+	case EMovementType::Sin:
+	{
+		FVector CurrentLocation = GetActorLocation();
+		float Time = GetWorld()->GetTimeSeconds();
+		CurrentLocation.Z = InitialLocation.Z + GeometryData.Amplitude * FMath::Sin(GeometryData.Freequency * Time);
+
+		SetActorLocation(CurrentLocation);
+	}
+	break;
+	case EMovementType::Static:
+		break;
+	default:
+		break;
+	}
 }
 
 

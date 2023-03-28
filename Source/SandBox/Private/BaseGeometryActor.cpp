@@ -2,6 +2,9 @@
 
 
 #include "BaseGeometryActor.h"
+#include "Engine/Engine.h"
+
+DEFINE_LOG_CATEGORY_STATIC(LogBaseGeometry, All, All)
 
 // Sets default values
 ABaseGeometryActor::ABaseGeometryActor()
@@ -15,9 +18,11 @@ ABaseGeometryActor::ABaseGeometryActor()
 void ABaseGeometryActor::BeginPlay()
 {
 	Super::BeginPlay();
-	//printTypes
+	
+	
 
-	printTypes();
+	//printStringTypes();
+	//printTypes();
 
 }
 // Called every frame
@@ -39,6 +44,28 @@ void ABaseGeometryActor::printTypes()
 	UE_LOG(LogTemp, Display, TEXT("Weapons num: %d, kills num: %i"), WeaponsNum, KillsNum);
 	UE_LOG(LogTemp, Display, TEXT("Healths: %f.2"), Health);
 	UE_LOG(LogTemp, Display, TEXT("IsDead: %d, HasWeapons: "), IsDead, static_cast<int>(HasWeapons));
+}
+
+void ABaseGeometryActor::printStringTypes()
+{
+	FString Name = "John Conor";
+
+	UE_LOG(LogBaseGeometry, Display, TEXT("Name: %s"), *Name);
+
+	int WeaponsNum = 4;
+
+	float Health = 34.444;
+	bool IsDead = false;
+
+	FString WeaponsNumStr = "Weapons num = " + FString::FromInt(WeaponsNum);
+	FString HealthStr = "Health = " + FString::SanitizeFloat(Health);
+	FString IsDeadStr = "Is Dead = " + FString(IsDead ? "true" : "false");
+
+	FString Stat = FString::Printf(TEXT(" \n -- All Stat -- \n %s \n %s \n %s \n "), *WeaponsNumStr, *HealthStr, *IsDeadStr);
+	UE_LOG(LogBaseGeometry, Warning, TEXT("%s"), *Stat);
+
+	GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Red, Name);
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, Stat, true, FVector2D(1.5f, 1.5f));
 }
 
 

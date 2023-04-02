@@ -5,6 +5,7 @@
 #include "Components/InputComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Gameframework/Controller.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogSandBoxPawn, All, All)
 
